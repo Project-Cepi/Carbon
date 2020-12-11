@@ -1,2 +1,2 @@
-# ExampleExtension
- An example extension for Minestom
+# CarbonExtension
+ An extension that adds GameMode commands.

@@ -1,5 +1,5 @@
 {
-  "entrypoint": "world.cepi.example.ExampleExtension",
-  "name": "ExampleExtension",
-  "version": "1.0.0-EXAMPLE"
+  "entrypoint": "world.cepi.carbon.CarbonExtension",
+  "name": "CarbonExtension",
+  "version": "1.0"
 }
