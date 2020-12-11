@@ -12,7 +12,7 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("Player $arg not found")
+            sender.sendMessage("§cPlayer $arg not found")
 
         }, CommandArguments.argPlayer)
 
