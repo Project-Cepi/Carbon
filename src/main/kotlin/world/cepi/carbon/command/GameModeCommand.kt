@@ -11,6 +11,7 @@ import world.cepi.carbon.CommandArguments
 class GameModeCommand : Command("gamemode", "gm") {
 
     init {
+
         setArgumentCallback({sender, arg, _ ->
 
             sender.sendMessage("§cPlayer $arg not found")
