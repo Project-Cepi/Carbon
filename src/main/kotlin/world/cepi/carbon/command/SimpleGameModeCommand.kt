@@ -4,7 +4,6 @@ import net.minestom.server.MinecraftServer
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
-import world.cepi.carbon.CommandArguments
 
 class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 

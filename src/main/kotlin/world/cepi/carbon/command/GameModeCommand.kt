@@ -6,7 +6,6 @@ import net.minestom.server.command.builder.Arguments
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
-import world.cepi.carbon.CommandArguments
 
 class GameModeCommand : Command("gamemode", "gm") {
 
