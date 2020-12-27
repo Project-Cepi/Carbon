@@ -1,6 +1,7 @@
 package world.cepi.carbon.command
 
 import net.minestom.server.MinecraftServer
+import net.minestom.server.chat.ChatColor
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Arguments
 import net.minestom.server.command.builder.Command
@@ -12,13 +13,13 @@ class GameModeCommand : Command("gamemode", "gm") {
     init {
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("§cPlayer $arg not found")
+            sender.sendMessage("${ChatColor.RED}Player $arg not found")
 
         }, CommandArguments.argPlayer)
 
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("§c$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.")
+            sender.sendMessage("${ChatColor.RED}$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.")
 
         }, CommandArguments.argGameMode)
 
@@ -75,7 +76,7 @@ class GameModeCommand : Command("gamemode", "gm") {
 
             // Basically never happens since there is a check for that in the command argument callback.
             if (player == null) {
-                sender.sendMessage("§cPlayer ${args.getWord("player")} not found")
+                sender.sendMessage("${ChatColor.RED}Player ${args.getWord("player")} not found")
                 return
             }
 

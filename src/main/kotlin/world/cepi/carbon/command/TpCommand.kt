@@ -1,6 +1,7 @@
 package world.cepi.carbon.command
 
 import net.minestom.server.MinecraftServer
+import net.minestom.server.chat.ChatColor
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Entity
 import net.minestom.server.entity.Player
@@ -14,31 +15,31 @@ class TpCommand : Command("teleport", "tp") {
     init {
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("§cPlayer $arg not found")
+            sender.sendMessage("${ChatColor.RED}Player $arg not found")
 
         }, CommandArguments.argPlayer)
 
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("§cTarget $arg not found")
+            sender.sendMessage("${ChatColor.RED}Target $arg not found")
 
         }, CommandArguments.argTarget)
 
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("§cInvalid coordinates: $arg")
+            sender.sendMessage("${ChatColor.RED}Invalid coordinates: $arg")
 
         }, CommandArguments.argCoordinates)
 
         setArgumentCallback({ sender, _, _ ->
 
-            sender.sendMessage("§cPlease specified a decimal value between ${CommandArguments.argYaw.min} and ${CommandArguments.argYaw.max} as yaw.")
+            sender.sendMessage("${ChatColor.RED}Please specified a decimal value between ${CommandArguments.argYaw.min} and ${CommandArguments.argYaw.max} as yaw.")
 
         }, CommandArguments.argYaw)
 
         setArgumentCallback({ sender, _, _ ->
 
-            sender.sendMessage("§cPlease specified a decimal value between ${CommandArguments.argPitch.min} and ${CommandArguments.argPitch.max} as pitch.")
+            sender.sendMessage("${ChatColor.RED}Please specified a decimal value between ${CommandArguments.argPitch.min} and ${CommandArguments.argPitch.max} as pitch.")
 
         }, CommandArguments.argPitch)
 

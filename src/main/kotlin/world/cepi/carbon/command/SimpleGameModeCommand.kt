@@ -1,6 +1,7 @@
 package world.cepi.carbon.command
 
 import net.minestom.server.MinecraftServer
+import net.minestom.server.chat.ChatColor
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
@@ -11,7 +12,7 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
         setArgumentCallback({sender, arg, _ ->
 
-            sender.sendMessage("§cPlayer $arg not found")
+            sender.sendMessage("${ChatColor.RED}Player $arg not found")
 
         }, CommandArguments.argPlayer)
 
