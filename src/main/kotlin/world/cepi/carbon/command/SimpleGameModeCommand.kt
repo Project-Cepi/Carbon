@@ -17,12 +17,11 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
         }, CommandArguments.argPlayer)
 
         setDefaultExecutor {sender, _ ->
-            if (sender is Player) {
+            if (sender is Player)
                 sender.gameMode = gameMode
-            }
-            else {
+            else
                 sender.sendMessage("Usage: /$name <player>")
-            }
+
         }
 
         addSyntax({sender, args ->
