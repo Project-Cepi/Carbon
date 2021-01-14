@@ -32,7 +32,7 @@ dependencies {
     implementation("com.github.Minestom:Minestom:4d2dd7d256")
 
     // Implement Klaxon
-    implementation("com.beust:klaxon:5.0.1")
+    implementation("com.beust:klaxon:5.4")
 
     // OkHttp Client
     implementation("com.squareup.okhttp3", "okhttp", "4.9.0")
