@@ -2,19 +2,20 @@ package world.cepi.carbon.command
 
 import net.minestom.server.MinecraftServer
 import net.minestom.server.chat.ChatColor
+import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
+import world.cepi.kstom.addSyntax
+import world.cepi.kstom.setArgumentCallback
 
 class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
     init {
 
-        setArgumentCallback({sender, arg, _ ->
-
+        setArgumentCallback(CommandArguments.argPlayer) {sender, arg ->
             sender.sendMessage("${ChatColor.RED}Player $arg not found")
-
-        }, CommandArguments.argPlayer)
+        }
 
         setDefaultExecutor {sender, _ ->
             if (sender is Player)
@@ -24,15 +25,13 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
         }
 
-        addSyntax({sender, args ->
-
+        addSyntax(CommandArguments.argPlayer) {sender, args ->
             GameModeCommand.subcommandPlayerSelected(sender, args, gameMode)
-
-        }, CommandArguments.argPlayer)
+        }
 
     }
 
-    override fun onDynamicWrite(text: String): Array<String> {
+    override fun onDynamicWrite(sender: CommandSender, text: String): Array<out String> {
         return MinecraftServer.getConnectionManager().onlinePlayers.map { it.username }.toTypedArray()
     }
 

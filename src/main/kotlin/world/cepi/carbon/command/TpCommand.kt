@@ -2,9 +2,12 @@ package world.cepi.carbon.command
 
 import net.minestom.server.MinecraftServer
 import net.minestom.server.chat.ChatColor
+import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Entity
 import net.minestom.server.entity.Player
+import world.cepi.kstom.addSyntax
+import world.cepi.kstom.setArgumentCallback
 
 class TpCommand : Command("teleport", "tp") {
 
@@ -13,35 +16,25 @@ class TpCommand : Command("teleport", "tp") {
     }
 
     init {
-        setArgumentCallback({sender, arg, _ ->
+        setArgumentCallback(CommandArguments.argPlayer) { sender, exception ->
+            sender.sendMessage("${ChatColor.RED}Player ${exception.input} not found")
+        }
 
-            sender.sendMessage("${ChatColor.RED}Player $arg not found")
+        setArgumentCallback(CommandArguments.argTarget) { sender, exception ->
+            sender.sendMessage("${ChatColor.RED}Target ${exception.input} not found")
+        }
 
-        }, CommandArguments.argPlayer)
+        setArgumentCallback(CommandArguments.argCoordinates) { sender, exception ->
+            sender.sendMessage("${ChatColor.RED}Invalid coordinates: ${exception.input}")
+        }
 
-        setArgumentCallback({sender, arg, _ ->
-
-            sender.sendMessage("${ChatColor.RED}Target $arg not found")
-
-        }, CommandArguments.argTarget)
-
-        setArgumentCallback({sender, arg, _ ->
-
-            sender.sendMessage("${ChatColor.RED}Invalid coordinates: $arg")
-
-        }, CommandArguments.argCoordinates)
-
-        setArgumentCallback({ sender, _, _ ->
-
+        setArgumentCallback(CommandArguments.argYaw) { sender, _ ->
             sender.sendMessage("${ChatColor.RED}Please specified a decimal value between ${CommandArguments.argYaw.min} and ${CommandArguments.argYaw.max} as yaw.")
+        }
 
-        }, CommandArguments.argYaw)
-
-        setArgumentCallback({ sender, _, _ ->
-
+        setArgumentCallback(CommandArguments.argPitch) { sender, _ ->
             sender.sendMessage("${ChatColor.RED}Please specified a decimal value between ${CommandArguments.argPitch.min} and ${CommandArguments.argPitch.max} as pitch.")
-
-        }, CommandArguments.argPitch)
+        }
 
         setDefaultExecutor { sender, _ ->
             if (sender is Entity) {
@@ -60,7 +53,7 @@ class TpCommand : Command("teleport", "tp") {
             }
         }
 
-        addSyntax({ sender, args ->
+        addSyntax(CommandArguments.argTarget) { sender, args ->
 
             if (sender !is Entity) {
                 sender.sendMessage("Did you mean?: /$name <player> <target>")
@@ -71,9 +64,9 @@ class TpCommand : Command("teleport", "tp") {
 
             sender.teleport(target.position)
 
-        }, CommandArguments.argTarget)
+        }
 
-        addSyntax({ _, args ->
+        addSyntax(CommandArguments.argPlayer, CommandArguments.argTarget) { _, args ->
 
             val player =getPlayer(args.getWord("player"))
             val target = getPlayer(args.getWord("target"))
@@ -88,9 +81,9 @@ class TpCommand : Command("teleport", "tp") {
 
             player.teleport(target.position)
 
-        }, CommandArguments.argPlayer, CommandArguments.argTarget)
+        }
 
-        addSyntax({sender, args ->
+        addSyntax(CommandArguments.argCoordinates) { sender, args ->
 
             if (sender !is Entity) {
                 sender.sendMessage("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]")
@@ -99,9 +92,9 @@ class TpCommand : Command("teleport", "tp") {
 
             sender.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition())
 
-        }, CommandArguments.argCoordinates)
+        }
 
-        addSyntax({sender, args ->
+        addSyntax(CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) { sender, args ->
 
             if (sender !is Entity) {
                 sender.sendMessage("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]")
@@ -114,9 +107,9 @@ class TpCommand : Command("teleport", "tp") {
 
             sender.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition())
 
-        }, CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch)
+        }
 
-        addSyntax({sender, args ->
+        addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates) {sender, args ->
 
             val target = getPlayer(args.getWord("target")) ?: return@addSyntax
 
@@ -127,9 +120,9 @@ class TpCommand : Command("teleport", "tp") {
                 target.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(target).toPosition())
             }
 
-        }, CommandArguments.argTarget, CommandArguments.argCoordinates)
+        }
 
-        addSyntax({sender, args ->
+        addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) { sender, args ->
 
             val target = getPlayer(args.getWord("target")) ?: return@addSyntax
 
@@ -145,10 +138,10 @@ class TpCommand : Command("teleport", "tp") {
 
             target.teleport(position)
 
-        }, CommandArguments.argTarget, CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch)
+        }
     }
 
-    override fun onDynamicWrite(text: String): Array<String> {
+    override fun onDynamicWrite(sender: CommandSender, text: String): Array<out String> {
         return MinecraftServer.getConnectionManager().onlinePlayers.map { it.username }.toTypedArray()
     }
 

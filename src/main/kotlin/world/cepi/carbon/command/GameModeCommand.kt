@@ -7,21 +7,19 @@ import net.minestom.server.command.builder.Arguments
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
+import world.cepi.kstom.addSyntax
+import world.cepi.kstom.setArgumentCallback
 
 class GameModeCommand : Command("gamemode", "gm") {
 
     init {
-        setArgumentCallback({sender, arg, _ ->
-
+        setArgumentCallback(CommandArguments.argPlayer) {sender, arg ->
             sender.sendMessage("${ChatColor.RED}Player $arg not found")
+        }
 
-        }, CommandArguments.argPlayer)
-
-        setArgumentCallback({sender, arg, _ ->
-
+        setArgumentCallback(CommandArguments.argGameMode) {sender, arg ->
             sender.sendMessage("${ChatColor.RED}$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.")
-
-        }, CommandArguments.argGameMode)
+        }
 
         setDefaultExecutor { sender, _ ->
             if (sender is Player) {
@@ -31,33 +29,33 @@ class GameModeCommand : Command("gamemode", "gm") {
             }
         }
 
-        addSyntax({ sender, args ->
+        addSyntax(CommandArguments.argGameMode) { sender, args ->
 
             subcommandPlayerNotSelected(sender, GameMode.valueOf(args.getWord("gameMode").toUpperCase()))
 
-        }, CommandArguments.argGameMode)
+        }
 
-        addSyntax({ sender, args ->
+        addSyntax(CommandArguments.argGameModeId) { sender, args ->
 
             subcommandPlayerNotSelected(sender, GameMode.values()[args.getInteger("gameModeId")])
 
-        }, CommandArguments.argGameModeId)
+        }
 
-        addSyntax({ sender, args ->
+        addSyntax(CommandArguments.argGameMode, CommandArguments.argPlayer) { sender, args ->
 
             subcommandPlayerSelected(sender, args, GameMode.valueOf(args.getWord("gameMode").toUpperCase()))
 
-        }, CommandArguments.argGameMode, CommandArguments.argPlayer)
+        }
 
-        addSyntax({ sender, args ->
+        addSyntax(CommandArguments.argGameModeId, CommandArguments.argPlayer) { sender, args ->
 
             subcommandPlayerSelected(sender, args, GameMode.values()[args.getInteger("gameModeId")])
 
-        }, CommandArguments.argGameModeId, CommandArguments.argPlayer)
+        }
 
     }
 
-    override fun onDynamicWrite(text: String): Array<String> {
+    override fun onDynamicWrite(sender: CommandSender, text: String): Array<out String> {
         return MinecraftServer.getConnectionManager().onlinePlayers.map { it.username }.toTypedArray()
     }
 
