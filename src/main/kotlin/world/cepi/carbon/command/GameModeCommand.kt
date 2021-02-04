@@ -66,13 +66,6 @@ class GameModeCommand : Command("gamemode", "gm") {
 
     companion object {
         fun subcommandPlayerSelected(sender: CommandSender, args: Arguments, gameMode: GameMode) {
-
-            // Basically never happens since there is a check for that in the command argument callback.
-            if (args.get(CommandArguments.argPlayer).find(sender).size == 0) {
-                sender.sendMessage("${ChatColor.RED}Player not found")
-                return
-            }
-
             args.get(CommandArguments.argPlayer).find(sender).forEach { (it as? Player)?.gameMode = gameMode }
         }
     }
