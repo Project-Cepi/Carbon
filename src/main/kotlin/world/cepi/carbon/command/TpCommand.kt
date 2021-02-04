@@ -16,7 +16,7 @@ class TpCommand : Command("teleport", "tp") {
     }
 
     init {
-        setArgumentCallback(CommandArguments.argPlayer) { sender, exception ->
+        setArgumentCallback(CommandArguments.argEntities) { sender, exception ->
             sender.sendMessage("${ChatColor.RED}Player ${exception.input} not found")
         }
 
@@ -66,20 +66,12 @@ class TpCommand : Command("teleport", "tp") {
 
         }
 
-        addSyntax(CommandArguments.argPlayer, CommandArguments.argTarget) { _, args ->
+        addSyntax(CommandArguments.argEntities, CommandArguments.argTarget) { sender, args ->
 
-            val player =getPlayer(args.getWord("player"))
-            val target = getPlayer(args.getWord("target"))
+            val target = args.get(CommandArguments.argTarget).find(sender)
+            val entities = args.get(CommandArguments.argEntities).find(sender)
 
-            if (player == null) {
-                return@addSyntax
-            }
-
-            if (target == null) {
-                return@addSyntax
-            }
-
-            player.teleport(target.position)
+            entities.forEach { it.teleport(target[0].position) }
 
         }
 
@@ -90,7 +82,7 @@ class TpCommand : Command("teleport", "tp") {
                 return@addSyntax
             }
 
-            sender.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition())
+            sender.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
 
         }
 
@@ -101,11 +93,11 @@ class TpCommand : Command("teleport", "tp") {
                 return@addSyntax
             }
 
-            val position = args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition()
+            val position = args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition()
             position.yaw = args.getFloat("yaw")
             position.pitch = args.getFloat("pitch")
 
-            sender.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition())
+            sender.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
 
         }
 
@@ -114,10 +106,9 @@ class TpCommand : Command("teleport", "tp") {
             val target = getPlayer(args.getWord("target")) ?: return@addSyntax
 
             if (sender is Entity) { // Relative to the sender
-                target.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition())
-            }
-            else { // Relative to the target
-                target.teleport(args.getRelativeBlockPosition("coordinates").fromRelativePosition(target).toPosition())
+                target.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
+            } else { // Relative to the target
+                target.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(target).toPosition())
             }
 
         }
@@ -126,11 +117,10 @@ class TpCommand : Command("teleport", "tp") {
 
             val target = getPlayer(args.getWord("target")) ?: return@addSyntax
 
-            /* Kotlin black magic right here*/
             val position = if (sender is Entity) { // Relative to the sender
-                args.getRelativeBlockPosition("coordinates").fromRelativePosition(sender).toPosition()
+                args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition()
             } else { // Relative to the target
-                args.getRelativeBlockPosition("coordinates").fromRelativePosition(target).toPosition()
+                args.get(CommandArguments.argCoordinates).fromRelativePosition(target).toPosition()
             }
 
             position.yaw = args.getFloat("yaw")
@@ -139,10 +129,6 @@ class TpCommand : Command("teleport", "tp") {
             target.teleport(position)
 
         }
-    }
-
-    override fun onDynamicWrite(sender: CommandSender, text: String): Array<out String> {
-        return MinecraftServer.getConnectionManager().onlinePlayers.map { it.username }.toTypedArray()
     }
 
 }

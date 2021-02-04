@@ -31,8 +31,4 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
     }
 
-    override fun onDynamicWrite(sender: CommandSender, text: String): Array<out String> {
-        return MinecraftServer.getConnectionManager().onlinePlayers.map { it.username }.toTypedArray()
-    }
-
 }

@@ -13,11 +13,11 @@ import world.cepi.kstom.setArgumentCallback
 class GameModeCommand : Command("gamemode", "gm") {
 
     init {
-        setArgumentCallback(CommandArguments.argPlayer) {sender, arg ->
+        setArgumentCallback(CommandArguments.argPlayer) { sender, arg ->
             sender.sendMessage("${ChatColor.RED}Player $arg not found")
         }
 
-        setArgumentCallback(CommandArguments.argGameMode) {sender, arg ->
+        setArgumentCallback(CommandArguments.argGameMode) { sender, arg ->
             sender.sendMessage("${ChatColor.RED}$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.")
         }
 
@@ -31,32 +31,28 @@ class GameModeCommand : Command("gamemode", "gm") {
 
         addSyntax(CommandArguments.argGameMode) { sender, args ->
 
-            subcommandPlayerNotSelected(sender, GameMode.valueOf(args.getWord("gameMode").toUpperCase()))
+            subcommandPlayerNotSelected(sender, GameMode.valueOf(args.get(CommandArguments.argGameMode).toUpperCase()))
 
         }
 
         addSyntax(CommandArguments.argGameModeId) { sender, args ->
 
-            subcommandPlayerNotSelected(sender, GameMode.values()[args.getInteger("gameModeId")])
+            subcommandPlayerNotSelected(sender, GameMode.values()[args.get(CommandArguments.argGameModeId)])
 
         }
 
         addSyntax(CommandArguments.argGameMode, CommandArguments.argPlayer) { sender, args ->
 
-            subcommandPlayerSelected(sender, args, GameMode.valueOf(args.getWord("gameMode").toUpperCase()))
+            subcommandPlayerSelected(sender, args, GameMode.valueOf(args.get(CommandArguments.argGameMode).toUpperCase()))
 
         }
 
         addSyntax(CommandArguments.argGameModeId, CommandArguments.argPlayer) { sender, args ->
 
-            subcommandPlayerSelected(sender, args, GameMode.values()[args.getInteger("gameModeId")])
+            subcommandPlayerSelected(sender, args, GameMode.values()[args.get(CommandArguments.argGameModeId)])
 
         }
 
-    }
-
-    override fun onDynamicWrite(sender: CommandSender, text: String): Array<out String> {
-        return MinecraftServer.getConnectionManager().onlinePlayers.map { it.username }.toTypedArray()
     }
 
     private fun subcommandPlayerNotSelected(sender: CommandSender, gameMode: GameMode) {
@@ -70,15 +66,14 @@ class GameModeCommand : Command("gamemode", "gm") {
 
     companion object {
         fun subcommandPlayerSelected(sender: CommandSender, args: Arguments, gameMode: GameMode) {
-            val player = MinecraftServer.getConnectionManager().findPlayer(args.getWord("player"))
 
             // Basically never happens since there is a check for that in the command argument callback.
-            if (player == null) {
-                sender.sendMessage("${ChatColor.RED}Player ${args.getWord("player")} not found")
+            if (args.get(CommandArguments.argPlayer).find(sender).size == 0) {
+                sender.sendMessage("${ChatColor.RED}Player not found")
                 return
             }
 
-            player.gameMode = gameMode
+            args.get(CommandArguments.argPlayer).find(sender).forEach { (it as? Player)?.gameMode = gameMode }
         }
     }
 
