@@ -70,7 +70,7 @@ class GameModeCommand : Command("gamemode", "gm") {
 
     companion object {
         fun subcommandPlayerSelected(sender: CommandSender, args: Arguments, gameMode: GameMode) {
-            val player = MinecraftServer.getConnectionManager().getPlayer(args.getWord("player"))
+            val player = MinecraftServer.getConnectionManager().findPlayer(args.getWord("player"))
 
             // Basically never happens since there is a check for that in the command argument callback.
             if (player == null) {

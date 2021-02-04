@@ -12,7 +12,7 @@ import world.cepi.kstom.setArgumentCallback
 class TpCommand : Command("teleport", "tp") {
 
     private fun getPlayer(name: String) : Player? {
-        return MinecraftServer.getConnectionManager().getPlayer(name)
+        return MinecraftServer.getConnectionManager().findPlayer(name)
     }
 
     init {

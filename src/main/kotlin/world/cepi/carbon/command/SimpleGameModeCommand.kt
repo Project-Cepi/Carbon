@@ -17,7 +17,7 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
             sender.sendMessage("${ChatColor.RED}Player $arg not found")
         }
 
-        setDefaultExecutor {sender, _ ->
+        setDefaultExecutor { sender, _ ->
             if (sender is Player)
                 sender.gameMode = gameMode
             else
