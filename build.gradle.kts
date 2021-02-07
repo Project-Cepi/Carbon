@@ -29,13 +29,13 @@ dependencies {
     implementation(kotlin("reflect"))
 
     // Compile Minestom into project
-    implementation("com.github.Minestom:Minestom:9fe2b8359c")
+    implementation("com.github.Minestom:Minestom:5a308f0ced")
 
     // Implement Klaxon
     implementation("com.beust:klaxon:5.4")
 
     // implement KStom
-    compileOnly("com.github.Project-Cepi:KStom:4fc7563d18")
+    compileOnly("com.github.Project-Cepi:KStom:0e00f18eae")
 }
 
 tasks.withType<Test> {

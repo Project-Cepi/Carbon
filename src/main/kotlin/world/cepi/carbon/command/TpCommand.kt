@@ -2,12 +2,11 @@ package world.cepi.carbon.command
 
 import net.minestom.server.MinecraftServer
 import net.minestom.server.chat.ChatColor
-import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Entity
 import net.minestom.server.entity.Player
-import world.cepi.kstom.addSyntax
-import world.cepi.kstom.setArgumentCallback
+import world.cepi.kstom.command.addSyntax
+import world.cepi.kstom.command.setArgumentCallback
 
 class TpCommand : Command("teleport", "tp") {
 
@@ -55,12 +54,12 @@ class TpCommand : Command("teleport", "tp") {
 
         addSyntax(CommandArguments.argTarget) { sender, args ->
 
-            if (sender !is Entity) {
+            if (sender !is Player) {
                 sender.sendMessage("Did you mean?: /$name <player> <target>")
                 return@addSyntax
             }
 
-            val target = getPlayer(args.getWord("target")) ?: return@addSyntax
+            val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             sender.teleport(target.position)
 

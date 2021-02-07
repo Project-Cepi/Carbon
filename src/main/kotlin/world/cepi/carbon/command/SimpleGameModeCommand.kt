@@ -6,8 +6,8 @@ import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
-import world.cepi.kstom.addSyntax
-import world.cepi.kstom.setArgumentCallback
+import world.cepi.kstom.command.addSyntax
+import world.cepi.kstom.command.setArgumentCallback
 
 class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
