@@ -10,10 +10,6 @@ import world.cepi.kstom.command.setArgumentCallback
 
 class TpCommand : Command("teleport", "tp") {
 
-    private fun getPlayer(name: String) : Player? {
-        return MinecraftServer.getConnectionManager().findPlayer(name)
-    }
-
     init {
         setArgumentCallback(CommandArguments.argEntities) { sender, exception ->
             sender.sendMessage("${ChatColor.RED}Player ${exception.input} not found")
@@ -93,8 +89,8 @@ class TpCommand : Command("teleport", "tp") {
             }
 
             val position = args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition()
-            position.yaw = args.getFloat("yaw")
-            position.pitch = args.getFloat("pitch")
+            position.yaw = args.get(CommandArguments.argYaw)
+            position.pitch = args.get(CommandArguments.argPitch)
 
             sender.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
 
@@ -102,7 +98,7 @@ class TpCommand : Command("teleport", "tp") {
 
         addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates) {sender, args ->
 
-            val target = getPlayer(args.getWord("target")) ?: return@addSyntax
+            val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             if (sender is Entity) { // Relative to the sender
                 target.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
@@ -114,7 +110,7 @@ class TpCommand : Command("teleport", "tp") {
 
         addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) { sender, args ->
 
-            val target = getPlayer(args.getWord("target")) ?: return@addSyntax
+            val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             val position = if (sender is Entity) { // Relative to the sender
                 args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition()
@@ -122,8 +118,8 @@ class TpCommand : Command("teleport", "tp") {
                 args.get(CommandArguments.argCoordinates).fromRelativePosition(target).toPosition()
             }
 
-            position.yaw = args.getFloat("yaw")
-            position.pitch = args.getFloat("pitch")
+            position.yaw = args.get(CommandArguments.argYaw)
+            position.pitch = args.get(CommandArguments.argPitch)
 
             target.teleport(position)
 
