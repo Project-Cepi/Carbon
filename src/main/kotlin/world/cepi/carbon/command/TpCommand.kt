@@ -77,7 +77,7 @@ class TpCommand : Command("teleport", "tp") {
                 return@addSyntax
             }
 
-            sender.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
+            sender.teleport(args.get(CommandArguments.argCoordinates).from(sender).toPosition())
 
         }
 
@@ -88,11 +88,11 @@ class TpCommand : Command("teleport", "tp") {
                 return@addSyntax
             }
 
-            val position = args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition()
+            val position = args.get(CommandArguments.argCoordinates).from(sender).toPosition()
             position.yaw = args.get(CommandArguments.argYaw)
             position.pitch = args.get(CommandArguments.argPitch)
 
-            sender.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
+            sender.teleport(args.get(CommandArguments.argCoordinates).from(sender).toPosition())
 
         }
 
@@ -101,9 +101,9 @@ class TpCommand : Command("teleport", "tp") {
             val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             if (sender is Entity) { // Relative to the sender
-                target.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition())
+                target.teleport(args.get(CommandArguments.argCoordinates).from(sender).toPosition())
             } else { // Relative to the target
-                target.teleport(args.get(CommandArguments.argCoordinates).fromRelativePosition(target).toPosition())
+                target.teleport(args.get(CommandArguments.argCoordinates).from(target).toPosition())
             }
 
         }
@@ -113,9 +113,9 @@ class TpCommand : Command("teleport", "tp") {
             val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             val position = if (sender is Entity) { // Relative to the sender
-                args.get(CommandArguments.argCoordinates).fromRelativePosition(sender).toPosition()
+                args.get(CommandArguments.argCoordinates).from(sender).toPosition()
             } else { // Relative to the target
-                args.get(CommandArguments.argCoordinates).fromRelativePosition(target).toPosition()
+                args.get(CommandArguments.argCoordinates).from(target).toPosition()
             }
 
             position.yaw = args.get(CommandArguments.argYaw)
