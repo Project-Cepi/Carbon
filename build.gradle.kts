@@ -32,7 +32,7 @@ dependencies {
     implementation("com.github.Minestom:Minestom:e8e8022ec6")
 
     // Implement Klaxon
-    implementation("com.beust:klaxon:5.4")
+    implementation("com.beust:klaxon:5.5")
 
     // implement KStom
     compileOnly("com.github.Project-Cepi:KStom:3b80924771")
