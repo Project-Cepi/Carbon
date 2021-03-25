@@ -1,10 +1,10 @@
 package world.cepi.carbon.command
 
-import net.minestom.server.MinecraftServer
-import net.minestom.server.chat.ChatColor
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.minestom.server.command.CommandSender
-import net.minestom.server.command.builder.Arguments
 import net.minestom.server.command.builder.Command
+import net.minestom.server.command.builder.CommandContext
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
 import world.cepi.kstom.command.addSyntax
@@ -14,18 +14,18 @@ class GameModeCommand : Command("gamemode", "gm") {
 
     init {
         setArgumentCallback(CommandArguments.argPlayer) { sender, arg ->
-            sender.sendMessage("${ChatColor.RED}Player $arg not found")
+            sender.sendMessage(Component.text("Player $arg not found", NamedTextColor.RED))
         }
 
         setArgumentCallback(CommandArguments.argGameMode) { sender, arg ->
-            sender.sendMessage("${ChatColor.RED}$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.")
+            sender.sendMessage(Component.text("$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.", NamedTextColor.RED))
         }
 
         setDefaultExecutor { sender, _ ->
             if (sender is Player) {
-                sender.sendMessage("Usage: /$name <survival/creative/adventure/spectator> or <0-3> [<player>]")
+                sender.sendMessage(Component.text("Usage: /$name <survival/creative/adventure/spectator> or <0-3> [<player>]"))
             } else {
-                sender.sendMessage("Usage: /$name <survival/creative/adventure/spectator> or <0-3> <player>")
+                sender.sendMessage(Component.text("Usage: /$name <survival/creative/adventure/spectator> or <0-3> <player>"))
             }
         }
 
@@ -60,13 +60,13 @@ class GameModeCommand : Command("gamemode", "gm") {
             sender.gameMode = gameMode
         }
         else {
-            sender.sendMessage("Usage: /$name <survival/creative/adventure/spectator> or <0-3> <player>")
+            sender.sendMessage(Component.text("Usage: /$name <survival/creative/adventure/spectator> or <0-3> <player>"))
         }
     }
 
     companion object {
-        fun subcommandPlayerSelected(sender: CommandSender, args: Arguments, gameMode: GameMode) {
-            args.get(CommandArguments.argPlayer).find(sender).forEach { (it as? Player)?.gameMode = gameMode }
+        fun subcommandPlayerSelected(sender: CommandSender, context: CommandContext, gameMode: GameMode) {
+            context.get(CommandArguments.argPlayer).find(sender).forEach { (it as? Player)?.gameMode = gameMode }
         }
     }
 

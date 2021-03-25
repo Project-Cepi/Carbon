@@ -1,7 +1,7 @@
 package world.cepi.carbon.command
 
-import net.minestom.server.MinecraftServer
-import net.minestom.server.chat.ChatColor
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Entity
 import net.minestom.server.entity.Player
@@ -12,46 +12,46 @@ class TpCommand : Command("teleport", "tp") {
 
     init {
         setArgumentCallback(CommandArguments.argEntities) { sender, exception ->
-            sender.sendMessage("${ChatColor.RED}Player ${exception.input} not found")
+            sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
         }
 
         setArgumentCallback(CommandArguments.argTarget) { sender, exception ->
-            sender.sendMessage("${ChatColor.RED}Target ${exception.input} not found")
+            sender.sendMessage(Component.text("Target ${exception.input} not found", NamedTextColor.RED))
         }
 
         setArgumentCallback(CommandArguments.argCoordinates) { sender, exception ->
-            sender.sendMessage("${ChatColor.RED}Invalid coordinates: ${exception.input}")
+            sender.sendMessage(Component.text("Invalid coordinates: ${exception.input}", NamedTextColor.RED))
         }
 
         setArgumentCallback(CommandArguments.argYaw) { sender, _ ->
-            sender.sendMessage("${ChatColor.RED}Please specified a decimal value between ${CommandArguments.argYaw.min} and ${CommandArguments.argYaw.max} as yaw.")
+            sender.sendMessage(Component.text("Please specified a decimal value between ${CommandArguments.argYaw.min} and ${CommandArguments.argYaw.max} as yaw.", NamedTextColor.RED))
         }
 
         setArgumentCallback(CommandArguments.argPitch) { sender, _ ->
-            sender.sendMessage("${ChatColor.RED}Please specified a decimal value between ${CommandArguments.argPitch.min} and ${CommandArguments.argPitch.max} as pitch.")
+            sender.sendMessage(Component.text("Please specified a decimal value between ${CommandArguments.argPitch.min} and ${CommandArguments.argPitch.max} as pitch.", NamedTextColor.RED))
         }
 
         setDefaultExecutor { sender, _ ->
             if (sender is Entity) {
-                sender.sendMessage(
+                sender.sendMessage(Component.text(
                     "Usage: /$name <target>\n " +
                             "or /$name <player> <target>\n " +
                             "or /$name <x> <y> <z> [<yaw> <pitch>]\n " +
                             "or /$name <target> <x> <y> <z> [<yaw> <pitch>]"
-                )
+                ))
             }
             else {
-                sender.sendMessage(
+                sender.sendMessage(Component.text(
                     "Usage: /$name <player> <target>\n " +
                             "or /$name <target> <x> <y> <z> [<yaw> <pitch>]"
-                )
+                ))
             }
         }
 
         addSyntax(CommandArguments.argTarget) { sender, args ->
 
             if (sender !is Player) {
-                sender.sendMessage("Did you mean?: /$name <player> <target>")
+                sender.sendMessage(Component.text("Did you mean?: /$name <player> <target>"))
                 return@addSyntax
             }
 
@@ -73,7 +73,7 @@ class TpCommand : Command("teleport", "tp") {
         addSyntax(CommandArguments.argCoordinates) { sender, args ->
 
             if (sender !is Entity) {
-                sender.sendMessage("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]")
+                sender.sendMessage(Component.text("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]"))
                 return@addSyntax
             }
 
@@ -84,7 +84,7 @@ class TpCommand : Command("teleport", "tp") {
         addSyntax(CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) { sender, args ->
 
             if (sender !is Entity) {
-                sender.sendMessage("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]")
+                sender.sendMessage(Component.text("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]"))
                 return@addSyntax
             }
 

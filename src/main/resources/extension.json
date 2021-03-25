@@ -1,5 +1,5 @@
 {
-  "entrypoint": "world.cepi.carbon.CarbonExtension",
-  "name": "CarbonExtension",
-  "version": "1.0"
+  "entrypoint": "${project.group}.${project.mainClass}",
+  "name": "${project.name}",
+  "version": "${project.version}"
 }
