@@ -1,5 +1,6 @@
 package world.cepi.carbon.whitelist
 
+import net.minestom.server.command.ConsoleSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.command.builder.exception.ArgumentSyntaxException
@@ -31,6 +32,8 @@ internal object WhitelistCommand : Command("whitelist") {
 
         addSyntax({ source, args ->
 
+            if (source !is ConsoleSender) return@addSyntax
+
             val uuid = args.get(playerArg)
 
             if (uuid.whitelisted()) {
@@ -43,6 +46,9 @@ internal object WhitelistCommand : Command("whitelist") {
         }, add, playerArg)
 
         addSyntax({ source, args ->
+
+            if (source !is ConsoleSender) return@addSyntax
+
             val uuid = args.get(playerArg)
 
             if (!uuid.whitelisted()) {

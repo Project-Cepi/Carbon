@@ -31,6 +31,8 @@ object WhitelistManager {
         save()
     }
 
+    fun size() = whitelist.size
+
     operator fun contains(id: UUID): Boolean = id in whitelist
 
     private fun save() {
