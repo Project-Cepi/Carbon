@@ -8,7 +8,7 @@ import net.minestom.server.entity.Player
 import world.cepi.kstom.command.addSyntax
 import world.cepi.kstom.command.setArgumentCallback
 
-class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
+internal class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
 
     init {
 
@@ -28,6 +28,15 @@ class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
             GameModeCommand.subcommandPlayerSelected(sender, args, gameMode)
         }
 
+    }
+
+    companion object {
+        val commandList = arrayOf(
+            SimpleGameModeCommand("gmc", GameMode.CREATIVE),
+            SimpleGameModeCommand("gms", GameMode.SURVIVAL),
+            SimpleGameModeCommand("gma", GameMode.ADVENTURE),
+            SimpleGameModeCommand("gmsp", GameMode.SPECTATOR)
+        )
     }
 
 }

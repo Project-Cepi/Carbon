@@ -10,7 +10,7 @@ import net.minestom.server.entity.Player
 import world.cepi.kstom.command.addSyntax
 import world.cepi.kstom.command.setArgumentCallback
 
-class GameModeCommand : Command("gamemode", "gm") {
+internal object GameModeCommand : Command("gamemode", "gm") {
 
     init {
         setArgumentCallback(CommandArguments.argPlayer) { sender, arg ->
@@ -31,25 +31,25 @@ class GameModeCommand : Command("gamemode", "gm") {
 
         addSyntax(CommandArguments.argGameMode) { sender, args ->
 
-            subcommandPlayerNotSelected(sender, GameMode.valueOf(args.get(CommandArguments.argGameMode).toUpperCase()))
+            subcommandPlayerNotSelected(sender, args.get(CommandArguments.argGameMode))
 
         }
 
         addSyntax(CommandArguments.argGameModeId) { sender, args ->
 
-            subcommandPlayerNotSelected(sender, GameMode.values()[args.get(CommandArguments.argGameModeId)])
+            subcommandPlayerNotSelected(sender, args.get(CommandArguments.argGameModeId))
 
         }
 
         addSyntax(CommandArguments.argGameMode, CommandArguments.argPlayer) { sender, args ->
 
-            subcommandPlayerSelected(sender, args, GameMode.valueOf(args.get(CommandArguments.argGameMode).toUpperCase()))
+            subcommandPlayerSelected(sender, args, args.get(CommandArguments.argGameMode))
 
         }
 
         addSyntax(CommandArguments.argGameModeId, CommandArguments.argPlayer) { sender, args ->
 
-            subcommandPlayerSelected(sender, args, GameMode.values()[args.get(CommandArguments.argGameModeId)])
+            subcommandPlayerSelected(sender, args, args.get(CommandArguments.argGameModeId))
 
         }
 
@@ -64,10 +64,9 @@ class GameModeCommand : Command("gamemode", "gm") {
         }
     }
 
-    companion object {
-        fun subcommandPlayerSelected(sender: CommandSender, context: CommandContext, gameMode: GameMode) {
-            context.get(CommandArguments.argPlayer).find(sender).forEach { (it as? Player)?.gameMode = gameMode }
-        }
+    fun subcommandPlayerSelected(sender: CommandSender, context: CommandContext, gameMode: GameMode) {
+        context.get(CommandArguments.argPlayer).find(sender).forEach { (it as? Player)?.gameMode = gameMode }
     }
+
 
 }

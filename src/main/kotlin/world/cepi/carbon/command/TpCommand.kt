@@ -8,7 +8,7 @@ import net.minestom.server.entity.Player
 import world.cepi.kstom.command.addSyntax
 import world.cepi.kstom.command.setArgumentCallback
 
-class TpCommand : Command("teleport", "tp") {
+object TpCommand : Command("teleport", "tp") {
 
     init {
         setArgumentCallback(CommandArguments.argEntities) { sender, exception ->
