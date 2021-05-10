@@ -5,13 +5,14 @@ import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.command.builder.exception.ArgumentSyntaxException
 import net.minestom.server.utils.mojang.MojangUtils
+import world.cepi.kstom.command.addSyntax
 import world.cepi.kstom.command.default
 import java.lang.Long
 import java.util.*
 
 internal object WhitelistCommand : Command("whitelist") {
 
-    fun toValidUuid(string: String) = UUID(
+    private fun toValidUuid(string: String) = UUID(
         Long.parseUnsignedLong(string.substring(0, 16), 16),
         Long.parseUnsignedLong(string.substring(16), 16)
     )
@@ -30,7 +31,7 @@ internal object WhitelistCommand : Command("whitelist") {
                 ?: throw ArgumentSyntaxException("That user does not exist!", input, 1)
         }
 
-        addSyntax({ source, args ->
+        addSyntax(add, playerArg) { source, args ->
 
             if (source !is ConsoleSender) return@addSyntax
 
@@ -43,9 +44,9 @@ internal object WhitelistCommand : Command("whitelist") {
 
             WhitelistManager.add(uuid)
             source.sendMessage("Added ${args.get(playerArg)} to the whitelist!")
-        }, add, playerArg)
+        }
 
-        addSyntax({ source, args ->
+        addSyntax(remove, playerArg) { source, args ->
 
             if (source !is ConsoleSender) return@addSyntax
 
@@ -58,6 +59,6 @@ internal object WhitelistCommand : Command("whitelist") {
 
             WhitelistManager.remove(uuid)
             source.sendMessage("Removed ${args.getRaw(playerArg.id)} from the whitelist!")
-        }, remove, playerArg)
+        }
     }
 }

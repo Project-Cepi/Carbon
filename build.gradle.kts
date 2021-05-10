@@ -46,7 +46,7 @@ dependencies {
     compileOnly("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.0.1")
 
     // implement KStom
-    compileOnly("com.github.Project-Cepi:KStom:54bfeccbf0")
+    implementation("com.github.Project-Cepi:KStom:54bfeccbf0")
 }
 
 tasks.withType<Test> {
