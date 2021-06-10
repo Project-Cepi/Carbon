@@ -6,7 +6,6 @@ import world.cepi.carbon.command.SimpleGameModeCommand
 import world.cepi.carbon.command.TpCommand
 import world.cepi.carbon.whitelist.WhitelistCommand
 import world.cepi.carbon.whitelist.whitelistListener
-import world.cepi.kstom.Manager
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
