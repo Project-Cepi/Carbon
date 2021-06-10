@@ -7,10 +7,10 @@ import world.cepi.carbon.command.TpCommand
 import world.cepi.carbon.whitelist.WhitelistCommand
 import world.cepi.carbon.whitelist.whitelistListener
 import world.cepi.kstom.Manager
-import world.cepi.kstom.addEventCallback
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
-import world.cepi.kstom.removeEventCallback
+import world.cepi.kstom.event.listenOnly
+import world.cepi.kstom.extension.ExtensionCompanion
 
 class CarbonExtension : Extension() {
 
@@ -22,7 +22,7 @@ class CarbonExtension : Extension() {
 
         WhitelistCommand.register()
 
-        Manager.globalEvent.addEventCallback(::whitelistListener)
+        eventNode.listenOnly(::whitelistListener)
 
         logger.info("[CarbonExtension] has been enabled!")
     }
@@ -36,9 +36,9 @@ class CarbonExtension : Extension() {
 
         WhitelistCommand.unregister()
 
-        Manager.globalEvent.removeEventCallback(::whitelistListener)
-
         logger.info("[CarbonExtension] has been disabled!")
     }
+
+    companion object: ExtensionCompanion<CarbonExtension>(CarbonExtension::class)
 
 }
