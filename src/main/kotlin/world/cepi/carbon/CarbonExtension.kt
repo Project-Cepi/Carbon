@@ -38,6 +38,6 @@ class CarbonExtension : Extension() {
         logger.info("[CarbonExtension] has been disabled!")
     }
 
-    companion object: ExtensionCompanion<CarbonExtension>(CarbonExtension::class)
+    companion object: ExtensionCompanion<CarbonExtension>(Any())
 
 }
