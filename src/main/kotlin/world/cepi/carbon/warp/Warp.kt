@@ -11,11 +11,11 @@ data class Warp(
     @Serializable(with = PositionSerializer::class) val position: Position
 )
 
-val Warps: Set<Warp> by lazy {
+val Warps: MutableSet<Warp> by lazy {
     val warpFolder = File("./warps")
     warpFolder.mkdir()
 
     warpFolder.listFiles()!!.map { file ->
         Json.decodeFromString(Warp.serializer(), file.readText())
-    }.toSet()
+    }.toMutableSet()
 }
