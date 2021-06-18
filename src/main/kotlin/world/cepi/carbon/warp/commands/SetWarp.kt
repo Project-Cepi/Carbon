@@ -1,5 +1,9 @@
 package world.cepi.carbon.warp.commands
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.util.RGBLike
+import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
@@ -18,13 +22,13 @@ object SetWarp : Command("setwarp") {
             if (sender.isConsole) return@addSyntax
             val player = sender as Player
 
-            Warps.add(Warp(args["name"], player.position))
+            if (checkName(args["name"], sender)) Warps.add(Warp(args["name"], player.position))
         }, name)
 
-        addSyntax({_, args ->
+        addSyntax({sender, args ->
             val position: Vector = args["coordinates"]
 
-            Warps.add(Warp(args["name"], position.toPosition()))
+            if (checkName(args["name"], sender)) Warps.add(Warp(args["name"], position.toPosition()))
         }, name, CommandArguments.argCoordinates)
 
         addSyntax({sender, args ->
@@ -35,9 +39,15 @@ object SetWarp : Command("setwarp") {
             val position = coordinateVector.toPosition()
             position.pitch = pitch
             position.yaw = yaw
-
-            Warps.add(Warp(args["name"], position))
+            if (checkName(args["name"], sender)) Warps.add(Warp(args["name"], position))
 
         }, name, CommandArguments.argCoordinates, CommandArguments.argPitch, CommandArguments.argYaw)
+    }
+
+    private fun checkName(name: String, `for`: CommandSender): Boolean {
+        val result = Warps.none { it.name == name }
+
+        `for`.sendMessage(Component.text("A warp with that name already exists", TextColor.color(0xcd1818)))
+        return result
     }
 }
