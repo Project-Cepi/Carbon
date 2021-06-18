@@ -4,6 +4,8 @@ import net.minestom.server.extensions.Extension
 import world.cepi.carbon.command.GameModeCommand
 import world.cepi.carbon.command.SimpleGameModeCommand
 import world.cepi.carbon.command.TpCommand
+import world.cepi.carbon.warp.Warp
+import world.cepi.carbon.warp.Warps
 import world.cepi.carbon.whitelist.WhitelistCommand
 import world.cepi.carbon.whitelist.whitelistListener
 import world.cepi.kstom.command.register
@@ -34,6 +36,8 @@ class CarbonExtension : Extension() {
         TpCommand.unregister()
 
         WhitelistCommand.unregister()
+
+        Warp.saveWarps()
 
         logger.info("[CarbonExtension] has been disabled!")
     }

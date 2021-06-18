@@ -9,7 +9,18 @@ import java.io.File
 data class Warp(
     val name: String,
     @Serializable(with = PositionSerializer::class) val position: Position
-)
+) {
+    companion object {
+        fun saveWarps() {
+            val warpFolder = File("./warps")
+
+            Warps.forEach {
+                val warpFile = File(warpFolder, "${it.name}.json")
+                warpFile.writeText(Json.encodeToString(serializer(), it))
+            }
+        }
+    }
+}
 
 val Warps: MutableSet<Warp> by lazy {
     val warpFolder = File("./warps")
