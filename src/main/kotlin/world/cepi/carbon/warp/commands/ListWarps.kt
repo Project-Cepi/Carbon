@@ -10,7 +10,7 @@ import net.minestom.server.command.builder.Command
 import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.Warps
 
-object ListWarps : Command("warps") {
+object ListWarps : Command("list") {
     init {
         setDefaultExecutor { sender, _ ->
             Warps.forEach { sender.sendMessage(warpMessage(it)) }

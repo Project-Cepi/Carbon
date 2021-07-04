@@ -12,8 +12,8 @@ internal class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command
 
     init {
 
-        setArgumentCallback(CommandArguments.argPlayer) {sender, arg ->
-            sender.sendMessage(Component.text("Player $arg not found", NamedTextColor.RED))
+        setArgumentCallback(CommandArguments.argPlayer) {
+            sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
         }
 
         setDefaultExecutor { sender, _ ->
@@ -24,8 +24,8 @@ internal class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command
 
         }
 
-        addSyntax(CommandArguments.argPlayer) {sender, args ->
-            GameModeCommand.subcommandPlayerSelected(sender, args, gameMode)
+        addSyntax(CommandArguments.argPlayer) {
+            GameModeCommand.subcommandPlayerSelected(sender, context, gameMode)
         }
 
     }

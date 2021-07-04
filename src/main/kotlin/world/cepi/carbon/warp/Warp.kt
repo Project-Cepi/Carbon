@@ -9,7 +9,10 @@ import net.kyori.adventure.text.format.TextColor
 import net.minestom.server.entity.Player
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.Position
+import world.cepi.kstom.serializer.PositionSerializer
 import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.writeText
 
 @Serializable
 data class Warp(
@@ -18,10 +21,10 @@ data class Warp(
 ) {
     companion object {
         fun saveWarps() {
-            val warpFolder = File("./warps")
+            val warpFolder = Path.of("warps")
 
             Warps.forEach {
-                val warpFile = File(warpFolder, "${it.name}.json")
+                val warpFile = warpFolder.resolve("${it.name}.json")
                 warpFile.writeText(Json.encodeToString(serializer(), it))
             }
         }

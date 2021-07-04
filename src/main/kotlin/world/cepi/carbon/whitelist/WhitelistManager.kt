@@ -4,11 +4,11 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
-import java.io.File
 import java.util.*
+import kotlin.io.path.*
 
 object WhitelistManager {
-    private val whitelistFile = File("./whitelist.json")
+    private val whitelistFile = Path("./whitelist.json")
     var whitelist: MutableList<UUID>
 
     private val serilalizer: KSerializer<List<String>> = ListSerializer(String.serializer())
@@ -41,7 +41,7 @@ object WhitelistManager {
 
     private fun save() {
         if (!whitelistFile.exists())
-            whitelistFile.createNewFile()
+            whitelistFile.createFile()
         whitelistFile.writeText(Json.encodeToString(serilalizer, whitelist.map { it.toString() }.toList()))
     }
 }

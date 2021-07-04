@@ -14,34 +14,34 @@ import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.Warps
 import world.cepi.kstom.command.addSyntax
 
-object SetWarp : Command("setwarp") {
+object SetWarp : Command("set") {
     val name = ArgumentType.Word("name")
 
     init {
-        addSyntax({sender, args ->
+        addSyntax(name) {
             if (sender.isConsole) return@addSyntax
             val player = sender as Player
 
-            if (checkName(args["name"], sender)) Warps.add(Warp(args["name"], player.position))
-        }, name)
+            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], player.position))
+        }
 
-        addSyntax({sender, args ->
-            val position: Vector = args["coordinates"]
+        addSyntax(name, CommandArguments.argCoordinates) {
+            val position: Vector = context["coordinates"]
 
-            if (checkName(args["name"], sender)) Warps.add(Warp(args["name"], position.toPosition()))
-        }, name, CommandArguments.argCoordinates)
+            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position.toPosition()))
+        }
 
-        addSyntax({sender, args ->
-            val coordinateVector: Vector = args["coordinates"]
-            val pitch: Float = args["pitch"]
-            val yaw: Float = args["yaw"]
+        addSyntax(name, CommandArguments.argCoordinates, CommandArguments.argPitch, CommandArguments.argYaw) {
+            val coordinateVector: Vector = context["coordinates"]
+            val pitch: Float = context["pitch"]
+            val yaw: Float = context["yaw"]
 
             val position = coordinateVector.toPosition()
             position.pitch = pitch
             position.yaw = yaw
-            if (checkName(args["name"], sender)) Warps.add(Warp(args["name"], position))
+            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position))
 
-        }, name, CommandArguments.argCoordinates, CommandArguments.argPitch, CommandArguments.argYaw)
+        }
     }
 
     private fun checkName(name: String, `for`: CommandSender): Boolean {

@@ -11,23 +11,23 @@ import world.cepi.kstom.command.setArgumentCallback
 object TpCommand : Command("teleport", "tp") {
 
     init {
-        setArgumentCallback(CommandArguments.argEntities) { sender, exception ->
+        setArgumentCallback(CommandArguments.argEntities) {
             sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
         }
 
-        setArgumentCallback(CommandArguments.argTarget) { sender, exception ->
+        setArgumentCallback(CommandArguments.argTarget) {
             sender.sendMessage(Component.text("Target ${exception.input} not found", NamedTextColor.RED))
         }
 
-        setArgumentCallback(CommandArguments.argCoordinates) { sender, exception ->
+        setArgumentCallback(CommandArguments.argCoordinates) {
             sender.sendMessage(Component.text("Invalid coordinates: ${exception.input}", NamedTextColor.RED))
         }
 
-        setArgumentCallback(CommandArguments.argYaw) { sender, _ ->
+        setArgumentCallback(CommandArguments.argYaw) {
             sender.sendMessage(Component.text("Please specified a decimal value between ${CommandArguments.argYaw.min} and ${CommandArguments.argYaw.max} as yaw.", NamedTextColor.RED))
         }
 
-        setArgumentCallback(CommandArguments.argPitch) { sender, _ ->
+        setArgumentCallback(CommandArguments.argPitch) {
             sender.sendMessage(Component.text("Please specified a decimal value between ${CommandArguments.argPitch.min} and ${CommandArguments.argPitch.max} as pitch.", NamedTextColor.RED))
         }
 
@@ -48,78 +48,82 @@ object TpCommand : Command("teleport", "tp") {
             }
         }
 
-        addSyntax(CommandArguments.argTarget) { sender, args ->
+        addSyntax(CommandArguments.argTarget) {
 
             if (sender !is Player) {
                 sender.sendMessage(Component.text("Did you mean?: /$name <player> <target>"))
                 return@addSyntax
             }
 
-            val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
+            val target = context.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
-            sender.teleport(target.position)
+            (sender as Player).teleport(target.position)
 
         }
 
-        addSyntax(CommandArguments.argEntities, CommandArguments.argTarget) { sender, args ->
+        addSyntax(CommandArguments.argEntities, CommandArguments.argTarget) {
 
-            val target = args.get(CommandArguments.argTarget).find(sender)
-            val entities = args.get(CommandArguments.argEntities).find(sender)
+            val target = context.get(CommandArguments.argTarget).find(sender)
+            val entities = context.get(CommandArguments.argEntities).find(sender)
 
             entities.forEach { it.teleport(target[0].position) }
 
         }
 
-        addSyntax(CommandArguments.argCoordinates) { sender, args ->
+        addSyntax(CommandArguments.argCoordinates) {
 
             if (sender !is Entity) {
                 sender.sendMessage(Component.text("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]"))
                 return@addSyntax
             }
 
-            sender.teleport(args.get(CommandArguments.argCoordinates).from(sender).toPosition())
+            val entity = sender as Entity
+
+            entity.teleport(context.get(CommandArguments.argCoordinates).from(entity).toPosition())
 
         }
 
-        addSyntax(CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) { sender, args ->
+        addSyntax(CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) {
 
             if (sender !is Entity) {
                 sender.sendMessage(Component.text("Did you mean?: /$name <target> <x> <y> <z> [<yaw> <pitch>]"))
                 return@addSyntax
             }
 
-            val position = args.get(CommandArguments.argCoordinates).from(sender).toPosition()
-            position.yaw = args.get(CommandArguments.argYaw)
-            position.pitch = args.get(CommandArguments.argPitch)
+            val entity = sender as Entity
 
-            sender.teleport(args.get(CommandArguments.argCoordinates).from(sender).toPosition())
+            val position = context.get(CommandArguments.argCoordinates).from(entity).toPosition()
+            position.yaw = context.get(CommandArguments.argYaw)
+            position.pitch = context.get(CommandArguments.argPitch)
+
+            entity.teleport(context.get(CommandArguments.argCoordinates).from(entity).toPosition())
 
         }
 
-        addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates) {sender, args ->
+        addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates) {
 
-            val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
+            val target = context.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             if (sender is Entity) { // Relative to the sender
-                target.teleport(args.get(CommandArguments.argCoordinates).from(sender).toPosition())
+                target.teleport(context.get(CommandArguments.argCoordinates).from(sender as Entity).toPosition())
             } else { // Relative to the target
-                target.teleport(args.get(CommandArguments.argCoordinates).from(target).toPosition())
+                target.teleport(context.get(CommandArguments.argCoordinates).from(target).toPosition())
             }
 
         }
 
-        addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) { sender, args ->
+        addSyntax(CommandArguments.argTarget, CommandArguments.argCoordinates, CommandArguments.argYaw, CommandArguments.argPitch) {
 
-            val target = args.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
+            val target = context.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             val position = if (sender is Entity) { // Relative to the sender
-                args.get(CommandArguments.argCoordinates).from(sender).toPosition()
+                context.get(CommandArguments.argCoordinates).from(sender as Entity).toPosition()
             } else { // Relative to the target
-                args.get(CommandArguments.argCoordinates).from(target).toPosition()
+                context.get(CommandArguments.argCoordinates).from(target).toPosition()
             }
 
-            position.yaw = args.get(CommandArguments.argYaw)
-            position.pitch = args.get(CommandArguments.argPitch)
+            position.yaw = context.get(CommandArguments.argYaw)
+            position.pitch = context.get(CommandArguments.argPitch)
 
             target.teleport(position)
 

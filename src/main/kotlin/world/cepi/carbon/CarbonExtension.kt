@@ -5,13 +5,12 @@ import world.cepi.carbon.command.GameModeCommand
 import world.cepi.carbon.command.SimpleGameModeCommand
 import world.cepi.carbon.command.TpCommand
 import world.cepi.carbon.warp.Warp
-import world.cepi.carbon.warp.Warps
+import world.cepi.carbon.warp.commands.WarpCommand
 import world.cepi.carbon.whitelist.WhitelistCommand
 import world.cepi.carbon.whitelist.whitelistListener
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
-import world.cepi.kstom.extension.ExtensionCompanion
 
 class CarbonExtension : Extension() {
 
@@ -22,6 +21,8 @@ class CarbonExtension : Extension() {
         TpCommand.register()
 
         WhitelistCommand.register()
+
+        WarpCommand.register()
 
         eventNode.listenOnly(::whitelistListener)
 
@@ -37,11 +38,10 @@ class CarbonExtension : Extension() {
 
         WhitelistCommand.unregister()
 
+        WarpCommand.unregister()
         Warp.saveWarps()
 
         logger.info("[CarbonExtension] has been disabled!")
     }
-
-    companion object: ExtensionCompanion<CarbonExtension>(Any())
 
 }

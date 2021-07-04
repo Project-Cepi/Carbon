@@ -39,51 +39,55 @@ internal object WhitelistCommand : Command("whitelist") {
                 ?: throw ArgumentSyntaxException("That user does not exist!", input, 1)
         }
 
-        addSyntax(add, playerArg) { source, args ->
+        addSyntax(add, playerArg) {
 
-            if (source !is ConsoleSender) {
-                consoleOnly(source)
+            if (sender !is ConsoleSender) {
+                consoleOnly(sender)
                 return@addSyntax
             }
 
-            val uuid = args.get(playerArg)
+            val uuid = context.get(playerArg)
 
             if (uuid.whitelisted()) {
-                source.sendMessage("${args.get(playerArg)} is already on the whitelist.")
+                sender.sendMessage("${context.get(playerArg)} is already on the whitelist.")
                 return@addSyntax
             }
 
             WhitelistManager.add(uuid)
-            source.sendMessage("Added ${args.get(playerArg)} to the whitelist!")
+            sender.sendMessage("Added ${context.get(playerArg)} to the whitelist!")
         }
 
-        addSyntax(list) { source ->
-            if (source !is ConsoleSender) {
-                consoleOnly(source)
+        addSyntax(list) {
+            if (sender !is ConsoleSender) {
+                consoleOnly(sender)
                 return@addSyntax
             }
 
             WhitelistManager.list().forEach {
-                source.sendMessage(Component.text("- ", NamedTextColor.GRAY).append(Component.text(it.toString(), NamedTextColor.WHITE)))
+                sender.sendMessage(
+                    Component.text("- ", NamedTextColor.DARK_GRAY)
+                        .append(Component.text(MojangUtils.fromUuid(it.toString())!!.get("name").asString, NamedTextColor.WHITE))
+                        .append(Component.text("($it)", NamedTextColor.GRAY))
+                )
             }
         }
 
-        addSyntax(remove, playerArg) { source, args ->
+        addSyntax(remove, playerArg) {
 
-            if (source !is ConsoleSender) {
-                consoleOnly(source)
+            if (sender !is ConsoleSender) {
+                consoleOnly(sender)
                 return@addSyntax
             }
 
-            val uuid = args.get(playerArg)
+            val uuid = context.get(playerArg)
 
             if (!uuid.whitelisted()) {
-                source.sendMessage("Player is not on the whitelist")
+                sender.sendMessage("Player is not on the whitelist")
                 return@addSyntax
             }
 
             WhitelistManager.remove(uuid)
-            source.sendMessage("Removed ${args.getRaw(playerArg.id)} from the whitelist!")
+            sender.sendMessage("Removed ${context.getRaw(playerArg.id)} from the whitelist!")
         }
     }
 }

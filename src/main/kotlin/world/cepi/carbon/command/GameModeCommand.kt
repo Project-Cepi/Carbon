@@ -13,12 +13,12 @@ import world.cepi.kstom.command.setArgumentCallback
 internal object GameModeCommand : Command("gamemode", "gm") {
 
     init {
-        setArgumentCallback(CommandArguments.argPlayer) { sender, arg ->
-            sender.sendMessage(Component.text("Player $arg not found", NamedTextColor.RED))
+        setArgumentCallback(CommandArguments.argPlayer) {
+            sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
         }
 
-        setArgumentCallback(CommandArguments.argGameMode) { sender, arg ->
-            sender.sendMessage(Component.text("$arg is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.", NamedTextColor.RED))
+        setArgumentCallback(CommandArguments.argGameMode) {
+            sender.sendMessage(Component.text("${exception.input} is not a valid gamemode, use <survival/creative/adventure/spectator> or <0-3>.", NamedTextColor.RED))
         }
 
         setDefaultExecutor { sender, _ ->
@@ -29,27 +29,27 @@ internal object GameModeCommand : Command("gamemode", "gm") {
             }
         }
 
-        addSyntax(CommandArguments.argGameMode) { sender, args ->
+        addSyntax(CommandArguments.argGameMode) {
 
-            subcommandPlayerNotSelected(sender, args.get(CommandArguments.argGameMode))
-
-        }
-
-        addSyntax(CommandArguments.argGameModeId) { sender, args ->
-
-            subcommandPlayerNotSelected(sender, args.get(CommandArguments.argGameModeId))
+            subcommandPlayerNotSelected(sender, context.get(CommandArguments.argGameMode))
 
         }
 
-        addSyntax(CommandArguments.argGameMode, CommandArguments.argPlayer) { sender, args ->
+        addSyntax(CommandArguments.argGameModeId) {
 
-            subcommandPlayerSelected(sender, args, args.get(CommandArguments.argGameMode))
+            subcommandPlayerNotSelected(sender, context.get(CommandArguments.argGameModeId))
 
         }
 
-        addSyntax(CommandArguments.argGameModeId, CommandArguments.argPlayer) { sender, args ->
+        addSyntax(CommandArguments.argGameMode, CommandArguments.argPlayer) {
 
-            subcommandPlayerSelected(sender, args, args.get(CommandArguments.argGameModeId))
+            subcommandPlayerSelected(sender, context, context.get(CommandArguments.argGameMode))
+
+        }
+
+        addSyntax(CommandArguments.argGameModeId, CommandArguments.argPlayer) {
+
+            subcommandPlayerSelected(sender, context, context.get(CommandArguments.argGameModeId))
 
         }
 
