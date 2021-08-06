@@ -3,6 +3,7 @@ package world.cepi.carbon
 import net.minestom.server.extensions.Extension
 import world.cepi.carbon.command.GameModeCommand
 import world.cepi.carbon.command.SimpleGameModeCommand
+import world.cepi.carbon.command.SpawnCommand
 import world.cepi.carbon.command.TpCommand
 import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.commands.WarpCommand
@@ -24,6 +25,8 @@ class CarbonExtension : Extension() {
 
         WarpCommand.register()
 
+        SpawnCommand.register()
+
         eventNode.listenOnly(::whitelistListener)
 
         logger.info("[CarbonExtension] has been enabled!")
@@ -40,6 +43,8 @@ class CarbonExtension : Extension() {
 
         WarpCommand.unregister()
         Warp.saveWarps()
+
+        SpawnCommand.unregister()
 
         logger.info("[CarbonExtension] has been disabled!")
     }
