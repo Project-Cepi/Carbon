@@ -1,5 +1,11 @@
 {
   "entrypoint": "${project.group}.${project.mainClass}",
   "name": "${project.name}",
-  "version": "${project.version}"
+  "version": "${project.version}",
+  "depdencies": [
+    "KStom"
+  ],
+  "meta": {
+    "downloadURL": "https://github.com/Project-Cepi/Carbon/releases/download/latest/CarbonExtension-1.0.0-all.jar"
+  }
 }
