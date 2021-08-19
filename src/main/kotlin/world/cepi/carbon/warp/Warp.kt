@@ -6,9 +6,8 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
+import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.Player
-import net.minestom.server.sound.SoundEvent
-import net.minestom.server.utils.Position
 import world.cepi.kstom.serializer.PositionSerializer
 import java.io.File
 import java.nio.file.Path
@@ -17,7 +16,7 @@ import kotlin.io.path.writeText
 @Serializable
 data class Warp(
     val name: String,
-    @Serializable(with = PositionSerializer::class) val position: Position
+    @Serializable(with = PositionSerializer::class) val position: Pos
 ) {
     companion object {
         fun saveWarps() {

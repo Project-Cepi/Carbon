@@ -6,9 +6,8 @@ import net.kyori.adventure.util.RGBLike
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
+import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.Player
-import net.minestom.server.utils.Position
-import net.minestom.server.utils.Vector
 import world.cepi.carbon.command.CommandArguments
 import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.Warps
@@ -26,19 +25,17 @@ object SetWarp : Command("set") {
         }
 
         addSyntax(name, CommandArguments.argCoordinates) {
-            val position: Vector = context["coordinates"]
+            val position: Vec = context["coordinates"]
 
-            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position.toPosition()))
+            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position.asPosition()))
         }
 
         addSyntax(name, CommandArguments.argCoordinates, CommandArguments.argPitch, CommandArguments.argYaw) {
-            val coordinateVector: Vector = context["coordinates"]
+            val coordinateVector: Vec = context["coordinates"]
             val pitch: Float = context["pitch"]
             val yaw: Float = context["yaw"]
 
-            val position = coordinateVector.toPosition()
-            position.pitch = pitch
-            position.yaw = yaw
+            val position = coordinateVector.asPosition().withPitch(pitch).withYaw(yaw)
             if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position))
 
         }

@@ -79,7 +79,7 @@ object TpCommand : Command("teleport", "tp") {
 
             val entity = sender as Entity
 
-            entity.teleport(context.get(CommandArguments.argCoordinates).from(entity).toPosition())
+            entity.teleport(context.get(CommandArguments.argCoordinates).from(entity).asPosition())
 
         }
 
@@ -92,11 +92,11 @@ object TpCommand : Command("teleport", "tp") {
 
             val entity = sender as Entity
 
-            val position = context.get(CommandArguments.argCoordinates).from(entity).toPosition()
-            position.yaw = context.get(CommandArguments.argYaw)
-            position.pitch = context.get(CommandArguments.argPitch)
+            val position = context.get(CommandArguments.argCoordinates).from(entity).asPosition()
+                .withYaw(context.get(CommandArguments.argYaw))
+                .withPitch(context.get(CommandArguments.argPitch))
 
-            entity.teleport(context.get(CommandArguments.argCoordinates).from(entity).toPosition())
+            entity.teleport(position)
 
         }
 
@@ -105,9 +105,9 @@ object TpCommand : Command("teleport", "tp") {
             val target = context.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             if (sender is Entity) { // Relative to the sender
-                target.teleport(context.get(CommandArguments.argCoordinates).from(sender as Entity).toPosition())
+                target.teleport(context.get(CommandArguments.argCoordinates).from(sender as Entity).asPosition())
             } else { // Relative to the target
-                target.teleport(context.get(CommandArguments.argCoordinates).from(target).toPosition())
+                target.teleport(context.get(CommandArguments.argCoordinates).from(target).asPosition())
             }
 
         }
@@ -117,13 +117,10 @@ object TpCommand : Command("teleport", "tp") {
             val target = context.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
             val position = if (sender is Entity) { // Relative to the sender
-                context.get(CommandArguments.argCoordinates).from(sender as Entity).toPosition()
+                context.get(CommandArguments.argCoordinates).from(sender as Entity).asPosition()
             } else { // Relative to the target
-                context.get(CommandArguments.argCoordinates).from(target).toPosition()
-            }
-
-            position.yaw = context.get(CommandArguments.argYaw)
-            position.pitch = context.get(CommandArguments.argPitch)
+                context.get(CommandArguments.argCoordinates).from(target).asPosition()
+            }.withYaw(context.get(CommandArguments.argYaw)).withPitch(context.get(CommandArguments.argPitch))
 
             target.teleport(position)
 

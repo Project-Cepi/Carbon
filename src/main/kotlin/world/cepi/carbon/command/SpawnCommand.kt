@@ -6,7 +6,7 @@ import net.minestom.server.entity.Player
 internal object SpawnCommand : Command("spawn") {
 
     init {
-        setDefaultExecutor { sender, context ->
+        setDefaultExecutor { sender, _ ->
 
             val player = sender as? Player ?: return@setDefaultExecutor
 
