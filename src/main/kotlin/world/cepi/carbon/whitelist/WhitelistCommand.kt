@@ -36,7 +36,6 @@ internal object WhitelistCommand : Command("whitelist") {
             MojangUtils.fromUsername(input)
                 ?.get("id")?.asString
                 ?.let { toValidUuid(it) }
-                ?: throw ArgumentSyntaxException("That user does not exist!", input, 1)
         }
 
         addSyntax(add, playerArg) {
