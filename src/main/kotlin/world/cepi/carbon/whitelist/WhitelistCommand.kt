@@ -6,7 +6,6 @@ import net.minestom.server.command.CommandSender
 import net.minestom.server.command.ConsoleSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
-import net.minestom.server.command.builder.exception.ArgumentSyntaxException
 import net.minestom.server.utils.mojang.MojangUtils
 import world.cepi.kstom.command.addSyntax
 import world.cepi.kstom.command.arguments.literal

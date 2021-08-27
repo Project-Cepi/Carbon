@@ -10,6 +10,18 @@ import world.cepi.kstom.command.setArgumentCallback
 
 object TpCommand : Command("teleport", "tp") {
 
+    fun Entity.teleportTo(target: Entity) {
+
+        if (target.instance == null) return
+
+        if (this.instance != target.instance) {
+            this.setInstance(target.instance!!, target.position)
+            return
+        }
+
+        this.teleport(target.position)
+    }
+
     init {
         setArgumentCallback(CommandArguments.argEntities) {
             sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
@@ -57,7 +69,7 @@ object TpCommand : Command("teleport", "tp") {
 
             val target = context.get(CommandArguments.argTarget).findFirstPlayer(sender) ?: return@addSyntax
 
-            (sender as Player).teleport(target.position)
+            (sender as Player).teleportTo(target)
 
         }
 
@@ -66,7 +78,7 @@ object TpCommand : Command("teleport", "tp") {
             val target = context.get(CommandArguments.argTarget).find(sender)
             val entities = context.get(CommandArguments.argEntities).find(sender)
 
-            entities.forEach { it.teleport(target[0].position) }
+            entities.forEach { it.teleportTo(target[0]) }
 
         }
 
