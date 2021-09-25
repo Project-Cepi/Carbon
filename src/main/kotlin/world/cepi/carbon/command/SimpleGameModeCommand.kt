@@ -5,31 +5,27 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
-import world.cepi.kstom.command.addSyntax
-import world.cepi.kstom.command.setArgumentCallback
+import world.cepi.kstom.command.kommand.Kommand
 
-internal class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command(name) {
+internal class SimpleGameModeCommand(name: String, gameMode: GameMode) : Kommand({
 
-    init {
+    argumentCallback(CommandArguments.argPlayer) {
+        sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
+    }
 
-        setArgumentCallback(CommandArguments.argPlayer) {
-            sender.sendMessage(Component.text("Player ${exception.input} not found", NamedTextColor.RED))
-        }
-
-        setDefaultExecutor { sender, _ ->
-            if (sender is Player)
-                sender.gameMode = gameMode
-            else
-                sender.sendMessage(Component.text("Usage: /$name <player>"))
-
-        }
-
-        addSyntax(CommandArguments.argPlayer) {
-            GameModeCommand.subcommandPlayerSelected(sender, context, gameMode)
-        }
+    default {
+        if (sender is Player)
+            player.gameMode = gameMode
+        else
+            sender.sendMessage(Component.text("Usage: /$name <player>"))
 
     }
 
+    syntax(CommandArguments.argPlayer) {
+        GameModeCommand.subcommandPlayerNotSelected(sender, gameMode, context.commandName)
+    }
+
+}, name) {
     companion object {
         val commandList = arrayOf(
             SimpleGameModeCommand("gmc", GameMode.CREATIVE),
@@ -38,5 +34,4 @@ internal class SimpleGameModeCommand(name: String, gameMode: GameMode) : Command
             SimpleGameModeCommand("gmsp", GameMode.SPECTATOR)
         )
     }
-
 }

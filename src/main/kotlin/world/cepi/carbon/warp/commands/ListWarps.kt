@@ -9,21 +9,16 @@ import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.Warps
+import world.cepi.kstom.command.kommand.Kommand
 
-object ListWarps : Command("list") {
-    init {
-        setDefaultExecutor { sender, _ ->
-            Warps.forEach { sender.sendMessage(warpMessage(it)) }
-        }
-    }
-
-    private fun warpMessage(warp: Warp): Component {
+object ListWarps : Kommand({
+    fun warpMessage(warp: Warp): Component {
         return Component.text { builder ->
             builder.content(warp.name)
             builder.color { 0x1be1e4 }
 
             builder.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND,
-            "warp @s ${warp.name}"))
+                "warp @s ${warp.name}"))
 
             builder.hoverEvent(HoverEventSource<Component> { HoverEvent.showText(Component.text { builder ->
                 builder.content("Click to teleport!")
@@ -31,4 +26,8 @@ object ListWarps : Command("list") {
             }) })
         }
     }
-}
+
+    default {
+        Warps.forEach { sender.sendMessage(warpMessage(it)) }
+    }
+}, "list")

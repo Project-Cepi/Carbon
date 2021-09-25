@@ -2,7 +2,6 @@ package world.cepi.carbon.warp.commands
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
-import net.kyori.adventure.util.RGBLike
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
@@ -11,40 +10,36 @@ import net.minestom.server.entity.Player
 import world.cepi.carbon.command.CommandArguments
 import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.Warps
-import world.cepi.kstom.command.addSyntax
+import world.cepi.kstom.command.kommand.Kommand
 
-object SetWarp : Command("set") {
+object SetWarp : Kommand({
     val name = ArgumentType.Word("name")
+        .filter { warpName -> Warps.none { it.name == warpName } }
 
-    init {
-        addSyntax(name) {
-            if (sender.isConsole) return@addSyntax
-            val player = sender as Player
-
-            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], player.position))
-        }
-
-        addSyntax(name, CommandArguments.argCoordinates) {
-            val position: Vec = context["coordinates"]
-
-            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position.asPosition()))
-        }
-
-        addSyntax(name, CommandArguments.argCoordinates, CommandArguments.argPitch, CommandArguments.argYaw) {
-            val coordinateVector: Vec = context["coordinates"]
-            val pitch: Float = context["pitch"]
-            val yaw: Float = context["yaw"]
-
-            val position = coordinateVector.asPosition().withPitch(pitch).withYaw(yaw)
-            if (checkName(context["name"], sender)) Warps.add(Warp(context["name"], position))
-
-        }
+    argumentCallback(name) {
+        sender.sendMessage(Component.text("A warp with that name already exists", TextColor.color(0xcd1818)))
     }
 
-    private fun checkName(name: String, `for`: CommandSender): Boolean {
-        val result = Warps.none { it.name == name }
+    syntax(name) {
+        if (sender.isConsole) return@syntax
+        val player = sender as Player
 
-        `for`.sendMessage(Component.text("A warp with that name already exists", TextColor.color(0xcd1818)))
-        return result
+        Warps.add(Warp(context["name"], player.position))
     }
-}
+
+    syntax(name, CommandArguments.argCoordinates) {
+        val position: Vec = context["coordinates"]
+
+        Warps.add(Warp(context["name"], position.asPosition()))
+    }
+
+    syntax(name, CommandArguments.argCoordinates, CommandArguments.argPitch, CommandArguments.argYaw) {
+        val coordinateVector: Vec = context["coordinates"]
+        val pitch: Float = context["pitch"]
+        val yaw: Float = context["yaw"]
+
+        val position = coordinateVector.asPosition().withPitch(pitch).withYaw(yaw)
+        Warps.add(Warp(context["name"], position))
+
+    }
+}, "set")
