@@ -7,6 +7,7 @@ import world.cepi.carbon.command.SpawnCommand
 import world.cepi.carbon.command.TpCommand
 import world.cepi.carbon.warp.Warp
 import world.cepi.carbon.warp.commands.WarpCommand
+import world.cepi.carbon.warp.commands.WarpsCommand
 import world.cepi.carbon.whitelist.WhitelistCommand
 import world.cepi.carbon.whitelist.whitelistListener
 import world.cepi.kstom.command.register
@@ -24,6 +25,7 @@ class CarbonExtension : Extension() {
         WhitelistCommand.register()
 
         WarpCommand.register()
+        WarpsCommand.register()
 
         SpawnCommand.register()
 
@@ -42,6 +44,7 @@ class CarbonExtension : Extension() {
         WhitelistCommand.unregister()
 
         WarpCommand.unregister()
+        WarpsCommand.unregister()
         Warp.saveWarps()
 
         SpawnCommand.unregister()

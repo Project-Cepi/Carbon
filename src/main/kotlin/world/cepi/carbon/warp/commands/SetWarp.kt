@@ -21,9 +21,6 @@ object SetWarp : Kommand({
     }
 
     syntax(name) {
-        if (sender.isConsole) return@syntax
-        val player = sender as Player
-
         Warps.add(Warp(context["name"], player.position))
     }
 
