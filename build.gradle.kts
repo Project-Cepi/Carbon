@@ -42,7 +42,7 @@ dependencies {
     compileOnly("com.github.Minestom:Minestom:72bda2c4ec")
 
     // Use kotlinx serialization
-    compileOnly("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.3.1")
+    compileOnly("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.3.2")
 
     // implement KStom
     compileOnly("com.github.Project-Cepi:KStom:e3ddf8f437")
