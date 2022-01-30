@@ -13,10 +13,12 @@ import world.cepi.carbon.whitelist.whitelistListener
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
+import world.cepi.kstom.util.log
+import world.cepi.kstom.util.node
 
 class CarbonExtension : Extension() {
 
-    override fun initialize() {
+    override fun initialize(): LoadStatus {
         GameModeCommand.register()
         SimpleGameModeCommand.commandList.forEach { it.register() }
 
@@ -29,9 +31,11 @@ class CarbonExtension : Extension() {
 
         SpawnCommand.register()
 
-        eventNode.listenOnly(::whitelistListener)
+        node.listenOnly(::whitelistListener)
 
-        logger.info("[CarbonExtension] has been enabled!")
+        log.info("[CarbonExtension] has been enabled!")
+
+        return LoadStatus.SUCCESS
     }
 
     override fun terminate() {
@@ -49,7 +53,7 @@ class CarbonExtension : Extension() {
 
         SpawnCommand.unregister()
 
-        logger.info("[CarbonExtension] has been disabled!")
+        log.info("[CarbonExtension] has been disabled!")
     }
 
 }

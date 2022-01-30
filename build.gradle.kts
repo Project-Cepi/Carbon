@@ -39,13 +39,13 @@ dependencies {
     compileOnly(kotlin("reflect"))
 
     // Compile Minestom into project
-    compileOnly("com.github.Minestom:Minestom:72bda2c4ec")
+    compileOnly("com.github.Minestom:Minestom:4ee5cbe424")
 
     // Use kotlinx serialization
     compileOnly("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.3.1")
 
     // implement KStom
-    compileOnly("com.github.Project-Cepi:KStom:e3ddf8f437")
+    compileOnly("com.github.Project-Cepi:KStom:05b5e1f2a1")
 }
 
 tasks.withType<Test> {
@@ -62,7 +62,7 @@ configurations {
 tasks {
     processResources {
         // Apply properties to extension.json
-        filesMatching("extension.json") {
+        filesMatching("META-INF/extension.json") {
             expand(project.properties)
         }
     }
@@ -82,13 +82,13 @@ tasks {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 
 val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = JavaVersion.VERSION_16.toString()
+compileKotlin.kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
 
 compileKotlin.kotlinOptions {
     freeCompilerArgs = listOf("-Xinline-classes")
