@@ -54,6 +54,8 @@ class GlassPane(val pane: Block) : BlockPlacementRule(pane) {
             GlassPane(Block.YELLOW_STAINED_GLASS_PANE),
             GlassPane(Block.WHITE_STAINED_GLASS_PANE),
             GlassPane(Block.PURPLE_STAINED_GLASS_PANE),
+            GlassPane(Block.PINK_STAINED_GLASS_PANE),
+            GlassPane(Block.RED_STAINED_GLASS_PANE)
         )
     }
 }
