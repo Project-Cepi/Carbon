@@ -1,6 +1,10 @@
 package world.cepi.carbon
 
 import net.minestom.server.extensions.Extension
+import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.block.rule.BlockPlacementRule
+import net.minestom.server.listener.BlockPlacementListener
+import world.cepi.carbon.block.GlassPane
 import world.cepi.carbon.command.*
 import world.cepi.carbon.command.GameModeCommand
 import world.cepi.carbon.command.SimpleGameModeCommand
@@ -10,6 +14,7 @@ import world.cepi.carbon.warp.commands.WarpCommand
 import world.cepi.carbon.warp.commands.WarpsCommand
 import world.cepi.carbon.whitelist.WhitelistCommand
 import world.cepi.carbon.whitelist.whitelistListener
+import world.cepi.kstom.Manager
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
@@ -32,6 +37,8 @@ class CarbonExtension : Extension() {
         SpawnCommand.register()
 
         NightVisionCommand.register()
+
+        GlassPane.handlers.forEach { Manager.block.registerBlockPlacementRule(it) }
 
         node.listenOnly(::whitelistListener)
 
