@@ -11,10 +11,10 @@ import world.cepi.kstom.command.kommand.Kommand
 object WarpCommand : Kommand({
     val warpArg = ArgumentType.Word("warp").suggest { Warps.map { it.name } }
 
-    syntax(warpArg).onlyPlayers {
-        val warp = Warps.firstOrNull { it.name == context[warpArg] } ?: return@onlyPlayers
+    syntax(warpArg) {
+        val warp = Warps.firstOrNull { it.name == context[warpArg] } ?: return@syntax
 
         player.warp(warp)
-    }
+    }.onlyPlayers()
 
 }, "warp")

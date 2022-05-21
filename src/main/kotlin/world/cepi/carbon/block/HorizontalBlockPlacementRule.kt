@@ -7,8 +7,7 @@ import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
 import net.minestom.server.instance.block.rule.BlockPlacementRule
 
-object ChainBlockPlacementRule : BlockPlacementRule(Block.CHAIN) {
-
+class HorizontalBlockPlacementRule(block: Block): BlockPlacementRule(block) {
     override fun blockUpdate(instance: Instance, blockPosition: Point, currentBlock: Block): Block {
         return block
     }
@@ -19,10 +18,17 @@ object ChainBlockPlacementRule : BlockPlacementRule(Block.CHAIN) {
         blockFace: BlockFace,
         blockPosition: Point,
         pl: Player
-    ) = block.withProperty("axis", when(blockFace) {
-        BlockFace.NORTH, BlockFace.SOUTH -> "z"
-        BlockFace.EAST, BlockFace.WEST -> "x"
-        BlockFace.BOTTOM, BlockFace.TOP -> "y"
-    })
+    ): Block {
+        val yaw = (pl.position.yaw % 360 + 360) % 360
 
+        return block.withProperty("facing", if (yaw > 135 || yaw < -135) {
+            "north"
+        } else if (yaw < -45) {
+            "east"
+        } else if (yaw > 45) {
+            "west"
+        } else {
+            "south"
+        })
+    }
 }

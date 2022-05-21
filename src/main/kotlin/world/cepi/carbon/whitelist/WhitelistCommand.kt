@@ -33,20 +33,20 @@ internal object WhitelistCommand : Kommand({
             ?.let { toValidUuid(it) }
     }
 
-    syntax(add, playerArg).onlyConsole {
+    syntax(add, playerArg) {
 
         val uuid = context.get(playerArg)
 
         if (uuid.whitelisted()) {
             sender.sendMessage("${context.get(playerArg)} is already on the whitelist.")
-            return@onlyConsole
+            return@syntax
         }
 
         WhitelistManager.add(uuid)
         sender.sendMessage("Added ${context.get(playerArg)} to the whitelist!")
-    }
+    }.onlyConsole()
 
-    syntax(list).onlyConsole {
+    syntax(list) {
 
         WhitelistManager.list().forEach {
             sender.sendMessage(
@@ -55,19 +55,19 @@ internal object WhitelistCommand : Kommand({
                     .append(Component.text("($it)", NamedTextColor.GRAY))
             )
         }
-    }
+    }.onlyConsole()
 
-    syntax(remove, playerArg).onlyConsole {
+    syntax(remove, playerArg) {
 
         val uuid = context.get(playerArg)
 
         if (!uuid.whitelisted()) {
             sender.sendMessage("Player is not on the whitelist")
-            return@onlyConsole
+            return@syntax
         }
 
         WhitelistManager.remove(uuid)
         sender.sendMessage("Removed ${context.getRaw(playerArg.id)} from the whitelist!")
-    }
+    }.onlyConsole()
 
 }, "whitelist")

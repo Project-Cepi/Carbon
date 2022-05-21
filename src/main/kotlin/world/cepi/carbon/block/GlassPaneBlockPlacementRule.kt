@@ -8,7 +8,7 @@ import net.minestom.server.instance.block.BlockFace
 import net.minestom.server.instance.block.rule.BlockPlacementRule
 import net.minestom.server.utils.Direction
 
-class GlassPaneBlockPlacementRule(val pane: Block) : BlockPlacementRule(pane) {
+class GlassPaneBlockPlacementRule(pane: Block) : BlockPlacementRule(pane) {
     override fun blockUpdate(instance: Instance, blockPosition: Point, block: Block): Block {
         return update(instance, block, blockPosition)
     }
