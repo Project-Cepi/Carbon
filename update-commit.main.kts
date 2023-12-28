@@ -1,5 +1,5 @@
 @file:DependsOn("io.github.microutils:kotlin-logging-jvm:3.0.5")
-@file:DependsOn("org.slf4j:slf4j-simple:2.0.9")
+@file:DependsOn("org.slf4j:slf4j-simple:2.0.10")
 @file:DependsOn("dev.kord:kord-core:0.12.0")
 
 import dev.kord.common.Color
